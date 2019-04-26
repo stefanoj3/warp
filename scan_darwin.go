@@ -36,14 +36,12 @@ func entriesFromARP() ([]Entry, error) {
 			continue
 		}
 
-		entries = append(
-			entries,
-			Entry{
-				IP:        m[1],
-				Interface: m[3],
-				MAC:       m[2],
-			},
-		)
+		entry, err := entryFromRawData(m[1], m[3], m[2])
+		if err != nil {
+			return nil, fmt.Errorf("darwin.entriesFromARP: failed to create entry: %s", err.Error())
+		}
+
+		entries = append(entries, entry)
 	}
 
 	return entries, nil

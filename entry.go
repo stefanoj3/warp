@@ -1,8 +1,10 @@
 package warp
 
+import "net"
+
 // An Entry represents an entry in the ARP table
 type Entry struct {
-	MAC       string
-	IP        string
-	Interface string
+	MAC       net.HardwareAddr
+	IP        net.IP
+	Interface net.Interface
 }

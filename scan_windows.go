@@ -14,7 +14,7 @@ var arpRegexp = regexp.MustCompile(`^[^\d\.]+([\d\.]+).+\s+([a-f0-9\-]{11,17})\s
 func entriesFromARP() ([]Entry, error) {
 	output, err := exec.Command("arp", "-a").CombinedOutput()
 	if err != nil {
-		return nil, fmt.Errorf("linux.entriesFromARP: failed to scan arp table: %s", err.Error())
+		return nil, fmt.Errorf("windows.entriesFromARP: failed to scan arp table: %s", err.Error())
 	}
 
 	var entries []Entry
@@ -28,7 +28,7 @@ func entriesFromARP() ([]Entry, error) {
 		}
 
 		if err != nil {
-			return nil, fmt.Errorf("linux.entriesFromARP: failed to read buffer: %s", err.Error())
+			return nil, fmt.Errorf("windows.entriesFromARP: failed to read buffer: %s", err.Error())
 		}
 
 		m := arpRegexp.FindStringSubmatch(string(line))
@@ -36,14 +36,12 @@ func entriesFromARP() ([]Entry, error) {
 			continue
 		}
 
-		entries = append(
-			entries,
-			Entry{
-				IP:        m[0],
-				Interface: m[1],
-				MAC:       m[2],
-			},
-		)
+		entry, err := entryFromRawData(m[0], m[2], m[1])
+		if err != nil {
+			return nil, fmt.Errorf("windows.entriesFromARP: failed to create entry: %s", err.Error())
+		}
+
+		entries = append(entries, entry)
 	}
 
 	return entries, nil
