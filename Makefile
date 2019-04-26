@@ -14,10 +14,12 @@ dep:
 .PHONY: check
 ## Run checks against the codebase
 check:
+ifneq ($(TRAVIS_OS_NAME), windows)
 	@golint -set_exit_status .
 	@go vet ./...
 	@goimports -l . | tee /dev/tty | xargs -I {} test -z {}
 	@golangci-lint run
+endif
 
 .PHONY: doc
 ## Start a local godoc instance
