@@ -12,7 +12,7 @@ func TestARPScannerCanPerformAScan(t *testing.T) {
 
 	_, err := scanner.Scan()
 	if err != nil {
-		t.Errorf("no error expected when scanning")
+		t.Errorf("no error expected when scanning, got %s", err.Error())
 	}
 }
 
@@ -23,7 +23,7 @@ func TestARPScannerCanPerformAScansInParallel(t *testing.T) {
 		go func() {
 			_, err := scanner.Scan()
 			if err != nil {
-				t.Errorf("no error expected when scanning")
+				t.Errorf("no error expected when scanning, got %s", err.Error())
 			}
 		}()
 	}
