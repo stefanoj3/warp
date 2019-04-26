@@ -11,7 +11,6 @@ dep:
 	@go get -u golang.org/x/lint/golint
 	@go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 
-
 .PHONY: check
 ## Run checks against the codebase
 check:
@@ -19,6 +18,12 @@ check:
 	@go vet ./...
 	@goimports -l . | tee /dev/tty | xargs -I {} test -z {}
 	@golangci-lint run
+
+.PHONY: doc
+## Start a local godoc instance
+doc:
+	@echo "godoc starting - you can check the documentation at http://localhost:6060/pkg/github.com/stefanoj3/warp/"
+	@godoc -http=":6060"
 
 .PHONY: test
 ## Execute tests
