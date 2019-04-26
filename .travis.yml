@@ -1,0 +1,39 @@
+sudo: required
+
+language: go
+
+matrix:
+  include:
+    - os: linux
+      go: "1.12.x"
+      sudo: true
+      cache:
+        directories:
+          - $HOME/.cache/go-build
+          - $HOME/gopath/pkg/mod
+          - $HOME/gopath/pkg/dep
+
+    - os: osx
+      go: "1.12.x"
+      cache:
+        directories:
+          - $HOME/Library/Caches/go-build
+          - $HOME/gopath/pkg/mod
+          - $HOME/gopath/pkg/dep
+          - $HOME/gopath/pkg/dep
+
+    - os: windows
+      go: "1.12.x"
+      cache:
+        directories:
+          - $HOME/Library/Caches/go-build
+          - $HOME/gopath/pkg/mod
+          - $HOME/gopath/pkg/dep
+
+script:
+  - make dep
+  - make check
+  - make test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
