@@ -40,8 +40,8 @@ func entriesFromARP() ([]Entry, error) {
 			entries,
 			Entry{
 				IP:        m[1],
-				Interface: m[2],
-				MAC:       m[3],
+				Interface: m[3],
+				MAC:       m[2],
 			},
 		)
 	}
