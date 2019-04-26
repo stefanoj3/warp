@@ -20,6 +20,12 @@ check:
 	@goimports -l . | tee /dev/tty | xargs -I {} test -z {}
 	@golangci-lint run
 
+.PHONY: test
+## Execute tests
+test:
+	@echo "Executing tests"
+	go test $(TESTARGS) ./...
+
 .PHONY: fix
 ## Run goimports against the source code
 fix:
