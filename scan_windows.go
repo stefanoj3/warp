@@ -32,7 +32,7 @@ func entriesFromARP() ([]Entry, error) {
 		}
 
 		m := arpRegexp.FindStringSubmatch(string(line))
-		if len(m) != 4 {
+		if len(m) != 3 {
 			continue
 		}
 
