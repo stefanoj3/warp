@@ -12,7 +12,7 @@ matrix:
           - $HOME/.cache/go-build
           - $HOME/gopath/pkg/mod
           - $HOME/gopath/pkg/dep
-
+  allow_failures:
     - os: osx
       go: "1.12.x"
       cache:
