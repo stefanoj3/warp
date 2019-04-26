@@ -7,8 +7,8 @@ import (
 	"github.com/stefanoj3/warp"
 )
 
-func TestArpScannerCanPerformAScan(t *testing.T) {
-	scanner := warp.NewArpScanner()
+func TestARPScannerCanPerformAScan(t *testing.T) {
+	scanner := warp.NewARPScanner()
 
 	_, err := scanner.Scan()
 	if err != nil {
@@ -16,8 +16,8 @@ func TestArpScannerCanPerformAScan(t *testing.T) {
 	}
 }
 
-func TestArpScannerCanPerformAScansInParallel(t *testing.T) {
-	scanner := warp.NewArpScanner()
+func TestARPScannerCanPerformAScansInParallel(t *testing.T) {
+	scanner := warp.NewARPScanner()
 
 	for i := 0; i < 30; i++ {
 		go func() {

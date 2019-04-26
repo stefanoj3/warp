@@ -1,14 +1,17 @@
 package warp
 
-type ArpScanner struct {
+// An ARPScanner is responsible for scanning the ARP table
+type ARPScanner struct {
 }
 
-func NewArpScanner() ArpScanner {
-	return ArpScanner{}
+// NewARPScanner returns a new instance of ARPScanner
+func NewARPScanner() ARPScanner {
+	return ARPScanner{}
 }
 
-func (s ArpScanner) Scan() ([]Entry, error) {
-	entries, err := entriesFromArp()
+// Scan tries to scan the ARP table and return the entries found if possible
+func (s ARPScanner) Scan() ([]Entry, error) {
+	entries, err := entriesFromARP()
 	if err != nil {
 		return nil, err
 	}

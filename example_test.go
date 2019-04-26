@@ -6,8 +6,8 @@ import (
 	"github.com/stefanoj3/warp"
 )
 
-func ExampleArpScanner_Scan() {
-	scanner := warp.NewArpScanner()
+func ExampleARPScanner_Scan() {
+	scanner := warp.NewARPScanner()
 	entries, err := scanner.Scan()
 	if err != nil {
 		panic(err)
