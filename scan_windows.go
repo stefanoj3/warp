@@ -38,7 +38,7 @@ func entriesFromARP() ([]Entry, error) {
 
 		entry, err := entryFromRawData(m[0], m[2], m[1])
 		if err != nil {
-			return nil, fmt.Errorf("windows.entriesFromARP: failed to create entry: %s", err.Error())
+			return nil, fmt.Errorf("windows.entriesFromARP: failed to create entry(%s): %s", line, err.Error())
 		}
 
 		entries = append(entries, entry)
