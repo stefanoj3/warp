@@ -21,11 +21,6 @@ matrix:
           - $HOME/gopath/pkg/dep
           - $HOME/gopath/pkg/dep
 
-    - os: windows
-      go: "1.12.x"
-      before_install:
-        - choco install -y make
-
 script:
   - make dep
   - make check
