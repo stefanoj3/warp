@@ -5,15 +5,14 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"os/exec"
 	"regexp"
 	"strings"
 )
 
 var arpRegexp = regexp.MustCompile(`^[^\d\.]+([\d\.]+).+\s+([a-f0-9:]{11,17})\s+on\s+([^\s]+)\s+.+$`)
 
-func entriesFromARP() ([]Entry, error) {
-	output, err := exec.Command("arp", "-n", "-a").CombinedOutput()
+func entriesFromARP(executor ARPCommandExecutor) ([]Entry, error) {
+	output, err := executor()
 	if err != nil {
 		return nil, fmt.Errorf("darwin.entriesFromARP: failed to scan arp table: %s", err.Error())
 	}

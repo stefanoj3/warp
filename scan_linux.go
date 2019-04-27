@@ -5,14 +5,13 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"os/exec"
 	"regexp"
 )
 
 var arpRegexp = regexp.MustCompile(`^([\d\.]+)\s+dev\s+(\w+)\s+\w+\s+([a-f0-9:]{17})\s+\w+$`)
 
-func entriesFromARP() ([]Entry, error) {
-	output, err := exec.Command("ip", "neigh").CombinedOutput()
+func entriesFromARP(executor ARPCommandExecutor) ([]Entry, error) {
+	output, err := executor()
 	if err != nil {
 		return nil, fmt.Errorf("linux.entriesFromARP: failed to scan arp table: %s", err.Error())
 	}
