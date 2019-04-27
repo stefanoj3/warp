@@ -4,6 +4,6 @@
 
 /*
 Package warp provides an abstraction layer to read the ARP table.
-It supports linux, osx and windows.
+It supports linux and osx.
 */
 package warp

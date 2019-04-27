@@ -7,6 +7,7 @@ import (
 	"io"
 	"os/exec"
 	"regexp"
+	"strings"
 )
 
 var arpRegexp = regexp.MustCompile(`^[^\d\.]+([\d\.]+).+\s+([a-f0-9:]{11,17})\s+on\s+([^\s]+)\s+.+$`)
@@ -36,16 +37,29 @@ func entriesFromARP() ([]Entry, error) {
 			continue
 		}
 
-		entries = append(
-			entries,
-			Entry{
-				IP:        m[1],
-				Interface: m[3],
-				MAC:       m[2],
-			},
-		)
+		entry, err := entryFromRawData(m[1], normalizeMac(m[2]), m[3])
+		if err != nil {
+			return nil, fmt.Errorf("darwin.entriesFromARP: failed to create entry(%s): %s", line, err.Error())
+		}
+
+		entries = append(entries, entry)
 	}
 
 	return entries, nil
 
+}
+
+// normalizeMac adds missing leading zeroes - the ARP table in OSX can contain MAC addresses that golang
+// is unable to parse like: f1:ec:4e:20:f2:6 which is missing the leading zero for the last portion of the
+// address (:6 instead of :06), this method would translate the MAC to f1:ec:4e:20:f2:06
+func normalizeMac(rawMac string) string {
+	parts := strings.Split(rawMac, ":")
+
+	for i, part := range parts {
+		if len(part) < 2 {
+			parts[i] = "0" + part
+		}
+	}
+
+	return strings.Join(parts, ":")
 }
