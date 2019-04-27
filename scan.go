@@ -7,16 +7,28 @@ import (
 
 // An ARPScanner is responsible for scanning the ARP table
 type ARPScanner struct {
+	arpCommandExecutor ARPCommandExecutor
 }
 
 // NewARPScanner returns a new instance of ARPScanner
-func NewARPScanner() ARPScanner {
-	return ARPScanner{}
+func NewARPScanner(options ...Option) (ARPScanner, error) {
+	s := ARPScanner{
+		arpCommandExecutor: LocalExecutor,
+	}
+
+	for _, option := range options {
+		err := option(&s)
+		if err != nil {
+			return s, fmt.Errorf("failed to apply option %T: %s", option, err.Error())
+		}
+	}
+
+	return s, nil
 }
 
 // Scan tries to scan the ARP table and return the entries found if possible
 func (s ARPScanner) Scan() ([]Entry, error) {
-	entries, err := entriesFromARP()
+	entries, err := entriesFromARP(s.arpCommandExecutor)
 	if err != nil {
 		return nil, err
 	}
